@@ -65,8 +65,8 @@ public class TeamManagement {
         //create ViewController
         ControllerFactory cf = new ControllerFactory();
         c = cf.getController(ViewerType);
-        c.setDB(db);
-        c.setLogger(l);
+        //c.setDB(db);
+        //c.setLogger(l);
        
     }
     
@@ -104,7 +104,7 @@ public class TeamManagement {
      */
     public int getID(Event event)
     {
-        int i;
+        int i = -999;
         String str = "SELECT ID FROM Events WHERE "
                 + "Team = '" + event.eventName + "', "
                 + "City = '" + event.teamName + "', "
@@ -114,13 +114,15 @@ public class TeamManagement {
             while(rs.next())
             {
                 i = rs.getInt("ID");
-                event.setID(i); 
+                //event.setID(i);
+                return i;
             }
         }
         catch(SQLException e)
         {
             l.log(e.getMessage());
         }
+        return i;
     }
     
     /**
@@ -130,6 +132,7 @@ public class TeamManagement {
      */
     public int getID(Team t)
     {
+        int i = -999;
         String str = "SELECT ID FROM Teams WHERE "
                 + "Team = '" + t.getName() + "', "
                 + "City = '" + t.getCity() + "', "
@@ -205,9 +208,15 @@ public class TeamManagement {
         return teams;
     }
     
+    public void log(String msg)
+    {
+        l.log(msg);
+    }
+   
+    private static Controller c;
     private static Database db;
-    private Logger l;
+    private static Logger l;
     Teams teams;
     User u;
-    private Controller c;
+    
 }
